@@ -22,7 +22,7 @@ class Executer():
 
     # iperf 相关命令
     IPERF_TEST_TIME = 30
-    IPERF_WAIT_TIME = IPERF_TEST_TIME + 5
+    IPERF_WAIT_TIME = IPERF_TEST_TIME * 2
     IPERF_SERVER = 'iperf -s -w 4m -i 1'
     IPERF_CLIENT_REGU = 'iperf -c {} -w 4m -i 1 -t {} -P{}'
     IPERF_MULTI_SERVER = 'iperf -s -w 4m -i 1 {}&'
@@ -40,6 +40,7 @@ class Executer():
     CMD_WIFI_CONNECT = 'cmd wifi connect-network {} {} {}'
     CMD_WIFI_CONNECT_OPEN = 'cmd wifi connect-network {} open'
     CMD_WIFI_HIDE = ' -h'
+    CMD_WIFI_STATUS = 'cmd wifi status'
 
     WIFI_CONNECT_PACKAGE = 'com.example.wifiConnect'
     WIFI_CONNECT_ACTIVITY = f'am start -n {WIFI_CONNECT_PACKAGE}/.MainActivity'
@@ -61,8 +62,8 @@ class Executer():
     GET_COUNTRY_CODE = 'iw reg get'
     SET_COUNTRY_CODE_FORMAT = 'iw reg set {}'
 
-    OPEN_INFO = '<node index="0" text="Hotspot name" resource-id="android:id/title" class="android.widget.TextView" package="com.droidlogic.tv.settings" content-desc="" checkable="false" checked="false" clickable="false" enabled="true"'
-    CLOSE_INFO = '<node index="0" text="Hotspot name" resource-id="android:id/title" class="android.widget.TextView" package="com.droidlogic.tv.settings" content-desc="" checkable="false" checked="false" clickable="false" enabled="false"'
+    OPEN_INFO = r'<node index="0" text="Hotspot name" resource-id="android:id/title" class="android.widget.TextView" package="com.(.*?).tv.settings" content-desc="" checkable="false" checked="false" clickable="false" enabled="true"'
+    CLOSE_INFO = r'<node index="0" text="Hotspot name" resource-id="android:id/title" class="android.widget.TextView" package="com.(.*?).tv.settings" content-desc="" checkable="false" checked="false" clickable="false" enabled="false"'
 
     PLAYERACTIVITY_REGU = 'am start -n com.google.android.youtube.tv/com.google.android.apps.youtube.tv.activity.ShellActivity -d https://www.youtube.com/watch?v={}'
     VIDEO_TAG_LIST = [
@@ -80,6 +81,7 @@ class Executer():
     ]
 
     WIFI_BUTTON_TAG = 'Available networks'
+
     def __init__(self):
         self.serialnumber = 'executer'
 
