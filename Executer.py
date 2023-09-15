@@ -24,8 +24,10 @@ class Executer():
     # iperf 相关命令
     IPERF_TEST_TIME = 30
     IPERF_WAIT_TIME = IPERF_TEST_TIME * 2
-    IPERF_SERVER = 'iperf -s -w 4m -i 1'
-    IPERF_CLIENT_REGU = 'iperf -c {} -w 4m -i 1 -t {} -P{}'
+    IPERF_SERVER = {'TCP':'iperf -s -w 4m -i 1',
+                    'UDP':'iperf -s -u -i 1 '}
+    IPERF_CLIENT_REGU = {'TCP':'iperf -c {} -w 4m -i 1 -t {} -P{}',
+                         'UDP':'iperf -c {} -u -b 400M -t {} -P{}'}
     IPERF_MULTI_SERVER = 'iperf -s -w 4m -i 1 {}&'
     IPERF_MULTI_CLIENT_REGU = '.iperf -c {} -w 4m -i 1 -t 60 -p {}'
 
@@ -68,6 +70,7 @@ class Executer():
 
     PLAYERACTIVITY_REGU = 'am start -n com.google.android.youtube.tv/com.google.android.apps.youtube.tv.activity.ShellActivity -d https://www.youtube.com/watch?v={}'
     VIDEO_TAG_LIST = [
+        {'link': 'r_gV5CHOSBM', 'name': '4K Amazon'},  # 4k
         {'link': 'vX2vsvdq8nw', 'name': '4K HDR 60FPS Sniper Will Smith'},  # 4k hrd 60 fps
         # {'link': '9Auq9mYxFEE', 'name': 'Sky Live'},
         {'link': '-ZMVjKT3-5A', 'name': 'NBC News (vp9)'},  # vp9

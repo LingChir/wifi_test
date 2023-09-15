@@ -14,7 +14,7 @@ import time
 
 import pytest
 
-from .. import Router
+from Router import Router
 from tools.Asusax88uControl import Asusax88uControl
 
 '''
@@ -27,36 +27,40 @@ from tools.Asusax88uControl import Asusax88uControl
 
 ssid = 'ATC_ASUS_AX88U_5G'
 passwd = '12345678'
-router_open = Router(band='5 GHz', ssid=ssid, wireless_mode='N/AC/AX mixed', channel='36', bandwidth='20 MHz',
+router_open = Router(band='5 GHz', ssid=ssid, wireless_mode='N/AC/AX mixed', channel='36', bandwidth='40 MHz',
                      authentication_method='Open System')
 router_wpa = Router(band='5 GHz', ssid=ssid, wireless_mode='Legacy', channel='40', bandwidth='20 MHz',
                     authentication_method='WPA2-Personal', wpa_passwd=passwd)
-router_wpa2 = Router(band='5 GHz', ssid=ssid, wireless_mode='自动', channel='44', bandwidth='20 MHz',
+router_wpa2 = Router(band='5 GHz', ssid=ssid, wireless_mode='自动', channel='44', bandwidth='40 MHz',
                      authentication_method='WPA2-Personal', wpa_passwd=passwd)
 
 ax88uControl = Asusax88uControl()
 
+devices_list = ['12345678901234']
+
 
 @pytest.fixture(autouse=True, scope='session')
 def setup():
-    ax88uControl.change_setting(router_wpa)
-    pytest.executer.connect_ssid(ssid,passwd)
-    pytest.executer.wait_for_wifi_address()
+    # ax88uControl.change_setting(router_wpa)
+    # pytest.executer.connect_ssid(ssid,passwd)
+    # pytest.executer.wait_for_wifi_address()
+    # ax88uControl.change_setting(router_open)
+    # pytest.executer.connect_ssid(ssid)
+    # pytest.executer.wait_for_wifi_address()
     yield
     ax88uControl.router_control.driver.quit()
-    pytest.executer.forget_network_ssid(ssid)
+    pytest.executer.forget_network_cmd()
     pytest.executer.kill_tvsetting()
 
 
 def test_change_ap():
-    for i in [router_open, router_wpa, router_wpa2] * 1000:
+    for i in [router_open, router_wpa, router_wpa2] * 2000:
         try:
             ax88uControl.change_setting(i)
-            # time.sleep(1)
-            # if i == router_open:
-            #     connect_ssid(ssid)
-            # else:
-            #     connect_ssid(ssid, passwd)
-            pytest.executer.wait_for_wifi_address()
+            time.sleep(1)
+            for j in devices_list:
+                pytest.execyter.serialnumber = j
+                pytest.executer.checkoutput(pytest.executer.CMD_WIFI_CONNECT.format(ssid, passwd, 'wpa2'))
+                pytest.executer.wait_for_wifi_address()
         except Exception as e:
             ...
